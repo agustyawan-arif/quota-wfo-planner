@@ -5,6 +5,7 @@ import CalendarGrid from './CalendarGrid';
 import Legend from './Legend';
 import PlannerControls from './PlannerControls';
 import OnboardingHelper from './OnboardingHelper';
+import ConfirmDialog from './ConfirmDialog';
 import { getDefaultPeriod, getPeriodNavigation, getDaysInPeriod, isWeekend, formatDateStr } from '../utils/dateUtils';
 import { getRequiredQuota, autoSelectWFODays, getBaseQuota, type EmployeeGrade, type DayStatuses, type DayStatus } from '../utils/quotaUtils';
 import { ID_HOLIDAYS } from '../data/holidays';
@@ -25,6 +26,13 @@ export default function WFOPlannerPage() {
   });
 
   const [dayStatuses, setDayStatuses] = useState<DayStatuses>({});
+  
+  const [dialogConfig, setDialogConfig] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    onConfirm: () => void;
+  } | null>(null);
 
   const periodDays = useMemo(() => getDaysInPeriod(currentStart, currentEnd), [currentStart, currentEnd]);
   
@@ -157,9 +165,33 @@ export default function WFOPlannerPage() {
   };
 
   const handleReset = () => {
-    if (!window.confirm("Reset this period's plan?\n\nThis will regenerate suggested WFO dates and clear custom WFO selections, but keep your leaves and holidays.")) {
-      return;
-    }
+    setDialogConfig({
+      isOpen: true,
+      title: "Reset this period's plan?",
+      message: "This will regenerate suggested WFO dates and clear custom WFO selections, but keep your leaves and holidays.",
+      onConfirm: () => {
+        executeReset(grade);
+        setDialogConfig(null);
+      }
+    });
+  };
+
+  const handleGradeChange = (newGrade: EmployeeGrade) => {
+    if (newGrade === grade) return;
+    
+    setDialogConfig({
+      isOpen: true,
+      title: "Change Grade & Reset Plan?",
+      message: `Changing your grade to ${newGrade} requires recalculating your WFO quota. This will regenerate suggested WFO dates and clear your custom WFO selections.`,
+      onConfirm: () => {
+        setGrade(newGrade);
+        executeReset(newGrade);
+        setDialogConfig(null);
+      }
+    });
+  };
+
+  const executeReset = (targetGrade: EmployeeGrade) => {
     
     const baselineStatuses: DayStatuses = {};
     let baselineLeaveCount = 0;
@@ -178,8 +210,8 @@ export default function WFOPlannerPage() {
       }
     });
 
-    const baselineQuota = getRequiredQuota(grade, baselineLeaveCount, baselineHolidayCount);
-    setDayStatuses(autoSelectWFODays(periodDays, baselineQuota, grade, baselineStatuses));
+    const baselineQuota = getRequiredQuota(targetGrade, baselineLeaveCount, baselineHolidayCount);
+    setDayStatuses(autoSelectWFODays(periodDays, baselineQuota, targetGrade, baselineStatuses));
   };
 
   const handleCopySummary = async () => {
@@ -287,7 +319,7 @@ ${wfoText || 'None'}`;
         <h2 className="text-sm font-semibold mb-4 text-main">Settings</h2>
         <PlannerControls 
           grade={grade} 
-          setGrade={setGrade} 
+          setGrade={handleGradeChange} 
           leaveCount={leaveCount}
           holidayCount={holidayCount}
           onReset={handleReset}
@@ -297,6 +329,14 @@ ${wfoText || 'None'}`;
       </div>
     </div>
     <OnboardingHelper />
+    
+    <ConfirmDialog 
+      isOpen={!!dialogConfig?.isOpen}
+      title={dialogConfig?.title || ''}
+      message={dialogConfig?.message || ''}
+      onConfirm={() => dialogConfig?.onConfirm()}
+      onCancel={() => setDialogConfig(null)}
+    />
     </>
   );
 }
