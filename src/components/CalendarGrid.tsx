@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef, TouchEvent } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import type { TouchEvent } from 'react';
 import { getDay, format, isToday, isSameWeek } from 'date-fns';
 import { Check } from 'lucide-react';
 import { isWeekend, formatDateStr } from '../utils/dateUtils';
