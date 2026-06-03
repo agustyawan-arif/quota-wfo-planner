@@ -1,0 +1,30 @@
+.legend-container {
+  /* margin handled by utility classes */
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-sm);
+}
+
+.legend-color.wfo {
+  background-color: var(--color-indigo);
+}
+
+.legend-color.available {
+  background-color: var(--color-available-bg);
+  border: 1px solid var(--color-border);
+}
+
+.legend-color.leave {
+  background-color: #fef3c7;
+}
+
+.legend-color.holiday {
+  background-color: #ffe4e6;
+}
+
+.legend-color.weekend {
+  background-color: var(--color-weekend-bg);
+}

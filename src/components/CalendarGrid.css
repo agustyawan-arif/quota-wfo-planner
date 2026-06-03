@@ -1,0 +1,192 @@
+.calendar-container {
+  width: 100%;
+}
+
+.relative {
+  position: relative;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.calendar-header-cell {
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-cell {
+  aspect-ratio: 1;
+  min-height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.calendar-cell.empty {
+  background: transparent;
+  pointer-events: none;
+}
+
+.calendar-cell.available {
+  background-color: var(--color-available-bg);
+  color: var(--text-main);
+}
+
+.calendar-cell.available:hover {
+  background-color: var(--color-available-hover);
+  border-color: var(--color-border);
+  transform: scale(1.05);
+}
+
+.calendar-cell.wfo {
+  background-color: var(--color-indigo);
+  color: white;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+}
+
+.calendar-cell.wfo:hover {
+  background-color: var(--color-indigo-hover);
+  transform: scale(1.05);
+}
+
+.calendar-cell.weekend {
+  background-color: var(--color-weekend-bg);
+  color: var(--color-weekend-text);
+  cursor: not-allowed;
+}
+
+.calendar-cell.leave {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.calendar-cell.leave:hover {
+  background-color: #fde68a;
+  transform: scale(1.05);
+}
+
+.calendar-cell.holiday {
+  background-color: #ffe4e6;
+  color: #e11d48;
+}
+
+.calendar-cell.holiday:hover {
+  background-color: #fecdd3;
+  transform: scale(1.05);
+}
+
+.calendar-cell.today {
+  border-color: var(--color-border);
+}
+
+/* Custom Tooltip */
+.calendar-cell[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-6px);
+  background: var(--text-main);
+  color: var(--bg-main);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 20;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.15s ease-out forwards;
+}
+
+.calendar-cell[data-tooltip]:hover::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--text-main);
+  z-index: 20;
+  pointer-events: none;
+  animation: tooltipFadeIn 0.15s ease-out forwards;
+}
+
+@keyframes tooltipFadeIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(0); }
+  to { opacity: 1; transform: translateX(-50%) translateY(-6px); }
+}
+
+.menu-backdrop {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 40;
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 50;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  width: 160px;
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.menu-header {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-light);
+  padding: 6px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.menu-item {
+  text-align: left;
+  padding: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s;
+  background: transparent;
+  width: 100%;
+}
+
+.menu-item:hover {
+  background-color: var(--color-available-bg);
+}
+
+.menu-item.wfo { color: var(--color-indigo); }
+.menu-item.leave { color: #d97706; }
+.menu-item.holiday { color: #e11d48; }
+.menu-item.clear { color: var(--text-muted); }
+
+.menu-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 4px 0;
+}

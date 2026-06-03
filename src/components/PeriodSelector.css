@@ -1,0 +1,29 @@
+.period-selector {
+  margin-bottom: 16px;
+}
+
+.period-badge {
+  background-color: var(--color-available-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 4px 8px;
+}
+
+.nav-btn {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: var(--color-border);
+  color: var(--text-main);
+}
+
+.period-text {
+  color: var(--text-main);
+}

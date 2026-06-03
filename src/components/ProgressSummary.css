@@ -1,0 +1,27 @@
+.progress-summary {
+  margin-bottom: 16px;
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-indigo) 0%, var(--color-indigo-hover) 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease-in-out;
+}
+
+.progress-bar-fill.complete {
+  background: linear-gradient(90deg, var(--color-indigo) 0%, #10b981 100%);
+}
+
+.text-light {
+  color: var(--text-light);
+}

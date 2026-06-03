@@ -1,0 +1,110 @@
+.planner-controls {
+}
+
+.segmented-control {
+  background-color: var(--color-available-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.action-btn {
+  background-color: var(--color-indigo);
+  color: white;
+  border-radius: var(--radius-md);
+  transition: opacity 0.2s, transform 0.1s;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  opacity: 0.9;
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+}
+
+.action-btn.icon-only {
+  width: 40px;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.segment-btn {
+  border-radius: calc(var(--radius-sm) - 2px);
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.segment-btn.active {
+  background-color: var(--bg-card);
+  color: var(--color-indigo);
+  box-shadow: var(--shadow-sm);
+}
+
+.input-wrapper {
+  background-color: var(--color-available-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  transition: border-color 0.2s;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--color-indigo);
+}
+
+.input-wrapper input {
+  border: none;
+  background: transparent;
+  outline: none;
+  color: var(--text-main);
+}
+
+/* Hide number input arrows */
+.input-wrapper input[type="number"]::-webkit-inner-spin-button,
+.input-wrapper input[type="number"]::-webkit-outer-spin-button {
+  margin-bottom: 0;
+}
+
+.helper-box {
+  background-color: #e0e7ff; /* indigo-100 */
+  color: #4338ca; /* indigo-700 */
+  border: 1px solid #c7d2fe; /* indigo-200 */
+  border-radius: var(--radius-md);
+  padding: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.input-wrapper input[type="number"]::-webkit-inner-spin-button,
+.input-wrapper input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+
+.text-holiday {
+  color: var(--color-holiday-dot);
+}
+
+.save-btn {
+  background-color: var(--color-indigo);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 24px;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.save-btn:hover {
+  background-color: var(--color-indigo-hover);
+}
+
+.save-btn:active {
+  transform: scale(0.98);
+}
+
+
