@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { CalendarRange, Plane, RotateCcw, Info, Copy, Check, Image as ImageIcon, Download } from 'lucide-react';
 import type { EmployeeGrade } from '../utils/quotaUtils';
-import { usePWAInstall } from '../hooks/usePWAInstall';
 import './PlannerControls.css';
 
 interface PlannerControlsProps {
@@ -24,7 +23,6 @@ export default function PlannerControls({
   onExport
 }: PlannerControlsProps) {
   const [isCopied, setIsCopied] = useState(false);
-  const { isInstallable, promptInstall } = usePWAInstall();
 
   const handleCopyClick = async () => {
     await onCopy();
@@ -109,16 +107,6 @@ export default function PlannerControls({
         </button>
       </div>
 
-      {isInstallable && (
-        <button 
-          className="action-btn w-full mt-3 flex items-center justify-center gap-2"
-          onClick={promptInstall}
-          style={{ backgroundColor: 'var(--color-indigo)', height: '40px' }}
-        >
-          <Download size={16} />
-          <span>Install App</span>
-        </button>
-      )}
     </div>
   );
 }
