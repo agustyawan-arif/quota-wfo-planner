@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CalendarRange, Plane, RotateCcw, Info, Copy, Check, Image as ImageIcon, Download } from 'lucide-react';
+import { CalendarRange, Plane, RotateCcw, Info, Copy, Check, Image as ImageIcon } from 'lucide-react';
 import type { EmployeeGrade } from '../utils/quotaUtils';
 import './PlannerControls.css';
 
