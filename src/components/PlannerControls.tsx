@@ -77,9 +77,11 @@ export default function PlannerControls({
       </div>
       
       <div className="helper-box mt-4 flex gap-2 items-start">
-        <Info size={16} className="shrink-0 mt-0.5" />
-        <div>
-          Click dates to plan WFO. <strong>Right-click or long-press</strong> for options.
+        <Info size={18} className="shrink-0 mt-0.5 icon-info" />
+        <div className="flex-1">
+          <span className="block mb-1 font-medium title-info">Quick Tip</span>
+          Click any date to plan WFO. <br/>
+          <strong>Right-click</strong> (or long-press) to set a Leave or Holiday.
         </div>
       </div>
       
