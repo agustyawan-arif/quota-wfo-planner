@@ -18,6 +18,7 @@ const DAYS_OF_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onSetDayStatus }: CalendarGridProps) {
   const [menuPos, setMenuPos] = useState<{ x: number, y: number, dateStr: string } | null>(null);
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isLongPress = useRef(false);
 
   // Close menu on scroll or resize
   useEffect(() => {
@@ -54,16 +55,23 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
 
   const handleTouchStart = (e: TouchEvent, dateStr: string, weekend: boolean) => {
     if (weekend) return;
+    
+    isLongPress.current = false;
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+
     longPressTimer.current = setTimeout(() => {
       longPressTimer.current = null;
-      const touch = e.touches[0];
-      let x = touch.clientX;
-      let y = touch.clientY;
+      isLongPress.current = true;
+      
+      let x = touchX;
+      let y = touchY;
       if (x > window.innerWidth - 180) x -= 180;
       if (y > window.innerHeight - 200) y -= 160;
+      
       setMenuPos({ x, y, dateStr });
       if (navigator.vibrate) navigator.vibrate(50);
-    }, 500); // 500ms long press
+    }, 400);
   };
 
   const handleTouchEnd = () => {
@@ -71,6 +79,14 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
       clearTimeout(longPressTimer.current);
       longPressTimer.current = null;
     }
+  };
+
+  const handleClick = (dateStr: string) => {
+    if (isLongPress.current) {
+      isLongPress.current = false;
+      return;
+    }
+    onToggleDay(dateStr);
   };
 
   const handleMenuAction = (status: DayStatus | null) => {
@@ -130,11 +146,10 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
               data-tooltip={tooltip}
               aria-label={`${displayDate}, ${title || 'Available to plan'}`}
               disabled={weekend}
-              onClick={() => onToggleDay(dateStr)}
+              onClick={() => handleClick(dateStr)}
               onContextMenu={(e) => handleContextMenu(e, dateStr, weekend)}
               onTouchStart={(e) => handleTouchStart(e, dateStr, weekend)}
               onTouchEnd={handleTouchEnd}
-              onTouchMove={handleTouchEnd}
               className={`calendar-cell ${stateClass}`}
             >
               {dayNumber}

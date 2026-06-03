@@ -40,6 +40,7 @@
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   border: 2px solid transparent;
   -webkit-touch-callout: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 
