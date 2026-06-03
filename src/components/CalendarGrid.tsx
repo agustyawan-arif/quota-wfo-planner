@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, TouchEvent } from 'react';
 import { getDay, format, isToday, isSameWeek } from 'date-fns';
 import { Check } from 'lucide-react';
 import { isWeekend, formatDateStr } from '../utils/dateUtils';
@@ -17,6 +17,7 @@ const DAYS_OF_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
 export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onSetDayStatus }: CalendarGridProps) {
   const [menuPos, setMenuPos] = useState<{ x: number, y: number, dateStr: string } | null>(null);
+  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Close menu on scroll or resize
   useEffect(() => {
@@ -49,6 +50,27 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
     if (y > window.innerHeight - 200) y -= 160;
 
     setMenuPos({ x, y, dateStr });
+  };
+
+  const handleTouchStart = (e: TouchEvent, dateStr: string, weekend: boolean) => {
+    if (weekend) return;
+    longPressTimer.current = setTimeout(() => {
+      longPressTimer.current = null;
+      const touch = e.touches[0];
+      let x = touch.clientX;
+      let y = touch.clientY;
+      if (x > window.innerWidth - 180) x -= 180;
+      if (y > window.innerHeight - 200) y -= 160;
+      setMenuPos({ x, y, dateStr });
+      if (navigator.vibrate) navigator.vibrate(50);
+    }, 500); // 500ms long press
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimer.current) {
+      clearTimeout(longPressTimer.current);
+      longPressTimer.current = null;
+    }
   };
 
   const handleMenuAction = (status: DayStatus | null) => {
@@ -110,6 +132,9 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
               disabled={weekend}
               onClick={() => onToggleDay(dateStr)}
               onContextMenu={(e) => handleContextMenu(e, dateStr, weekend)}
+              onTouchStart={(e) => handleTouchStart(e, dateStr, weekend)}
+              onTouchEnd={handleTouchEnd}
+              onTouchMove={handleTouchEnd}
               className={`calendar-cell ${stateClass}`}
             >
               {dayNumber}
