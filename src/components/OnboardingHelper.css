@@ -1,0 +1,100 @@
+.onboarding-helper-minimized {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background-color: var(--color-indigo);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+  cursor: pointer;
+  z-index: 50;
+  transition: all 0.2s;
+}
+
+.onboarding-helper-minimized:hover {
+  transform: scale(1.05);
+  background-color: var(--color-indigo-hover);
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.5);
+}
+
+.onboarding-helper-expanded {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background-color: var(--bg-card);
+  border: 2px solid var(--color-indigo);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.2), 0 8px 10px -6px rgba(79, 70, 229, 0.1);
+  z-index: 50;
+  width: 260px;
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.onboarding-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.onboarding-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.onboarding-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.2s;
+}
+
+.onboarding-close:hover {
+  background-color: var(--color-available-bg);
+  color: var(--text-main);
+}
+
+.onboarding-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.onboarding-list li {
+  margin-bottom: 4px;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .onboarding-helper-expanded,
+  .onboarding-helper-minimized {
+    bottom: 16px;
+    left: 16px;
+  }
+}

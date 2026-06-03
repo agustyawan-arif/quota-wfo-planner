@@ -1,9 +1,11 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
+import { X } from 'lucide-react';
 import PeriodSelector from './PeriodSelector';
 import ProgressSummary from './ProgressSummary';
 import CalendarGrid from './CalendarGrid';
 import Legend from './Legend';
 import PlannerControls from './PlannerControls';
+import OnboardingHelper from './OnboardingHelper';
 import { getDefaultPeriod, getPeriodNavigation, getDaysInPeriod, isWeekend, formatDateStr } from '../utils/dateUtils';
 import { getRequiredQuota, autoSelectWFODays, getBaseQuota, type EmployeeGrade, type DayStatuses, type DayStatus } from '../utils/quotaUtils';
 import { ID_HOLIDAYS } from '../data/holidays';
@@ -22,7 +24,7 @@ export default function WFOPlannerPage() {
     } catch (e) {}
     return 'D-E';
   });
-  
+
   const [dayStatuses, setDayStatuses] = useState<DayStatuses>({});
 
   const periodDays = useMemo(() => getDaysInPeriod(currentStart, currentEnd), [currentStart, currentEnd]);
@@ -156,29 +158,28 @@ export default function WFOPlannerPage() {
   };
 
   const handleReset = () => {
-    try {
-      const saved = localStorage.getItem('wfo-planner-data');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (parsed.schedules && parsed.schedules[periodKey]) {
-          delete parsed.schedules[periodKey];
-          localStorage.setItem('wfo-planner-data', JSON.stringify(parsed));
-        }
-      }
-    } catch (e) {}
+    if (!window.confirm("Reset this period's plan?\n\nThis will regenerate suggested WFO dates and clear custom WFO selections, but keep your leaves and holidays.")) {
+      return;
+    }
     
-    // Create baseline with just holidays, skipping any manually saved leaves
     const baselineStatuses: DayStatuses = {};
+    let baselineLeaveCount = 0;
     let baselineHolidayCount = 0;
+    
     periodDays.forEach(date => {
       const dateStr = formatDateStr(date);
-      if (ID_HOLIDAYS[dateStr]) {
+      const current = dayStatuses[dateStr];
+      
+      if (current === 'Leave') {
+        baselineStatuses[dateStr] = 'Leave';
+        if (!isWeekend(date)) baselineLeaveCount++;
+      } else if (current === 'Holiday' || ID_HOLIDAYS[dateStr]) {
         baselineStatuses[dateStr] = 'Holiday';
         if (!isWeekend(date)) baselineHolidayCount++;
       }
     });
 
-    const baselineQuota = getRequiredQuota(grade, 0, baselineHolidayCount);
+    const baselineQuota = getRequiredQuota(grade, baselineLeaveCount, baselineHolidayCount);
     setDayStatuses(autoSelectWFODays(periodDays, baselineQuota, grade, baselineStatuses));
   };
 
@@ -258,7 +259,8 @@ ${wfoText || 'None'}`;
   };
 
   return (
-    <div className="layout-container">
+    <>
+      <div className="layout-container">
       <div className="card left-panel">
         <PeriodSelector 
           start={currentStart} 
@@ -295,5 +297,7 @@ ${wfoText || 'None'}`;
         />
       </div>
     </div>
+    <OnboardingHelper />
+    </>
   );
 }

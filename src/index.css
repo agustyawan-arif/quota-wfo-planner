@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root {
   /* Color Palette */
@@ -45,7 +45,7 @@ html, body {
 }
 
 body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
   line-height: 1.5;
@@ -68,6 +68,13 @@ button {
   border: none;
   background: none;
   cursor: pointer;
+  outline: none;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-indigo);
+  outline-offset: 2px;
+  border-radius: inherit;
 }
 
 input {
@@ -80,6 +87,21 @@ input {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card);
   padding: 24px;
+  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  box-shadow: 0 25px 35px -5px rgb(0 0 0 / 0.05), 0 10px 15px -6px rgb(0 0 0 / 0.05);
+}
+
+@keyframes subtleUpdate {
+  0% { opacity: 0.5; transform: translateY(2px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-update {
+  animation: subtleUpdate 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
 }
 
 .layout-container {
@@ -106,6 +128,9 @@ input {
   .left-panel, .right-panel {
     width: 100%;
     min-width: 0;
+  }
+  .card {
+    padding: 16px;
   }
 }
 

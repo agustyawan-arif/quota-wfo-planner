@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { getDay, format, isToday } from 'date-fns';
+import { getDay, format, isToday, isSameWeek } from 'date-fns';
+import { Check } from 'lucide-react';
 import { isWeekend, formatDateStr } from '../utils/dateUtils';
 import type { DayStatus, DayStatuses } from '../utils/quotaUtils';
 import { ID_HOLIDAYS } from '../data/holidays';
@@ -75,6 +76,7 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
           const weekend = isWeekend(date);
           const status = dayStatuses[dateStr];
           const today = isToday(date);
+          const currentWeek = isSameWeek(date, new Date(), { weekStartsOn: 1 });
           const dayNumber = format(date, 'd');
           
           let stateClass = 'available';
@@ -82,6 +84,7 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
           
           if (weekend) {
             stateClass = 'weekend';
+            title = 'Weekend';
           } else if (status === 'Holiday') {
             stateClass = 'holiday';
             title = ID_HOLIDAYS[dateStr] || 'Holiday';
@@ -90,15 +93,20 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
             title = 'Leave';
           } else if (status === 'WFO') {
             stateClass = 'wfo';
-            title = 'WFO Planned';
+            title = 'Planned WFO';
           }
           
+          const displayDate = format(date, 'MMM d');
+          const tooltip = title ? `${displayDate} — ${title}` : displayDate;
+          
+          if (currentWeek) stateClass += ' current-week';
           if (today) stateClass += ' today';
 
           return (
             <button
               key={dateStr}
-              data-tooltip={title || undefined}
+              data-tooltip={tooltip}
+              aria-label={`${displayDate}, ${title || 'Available to plan'}`}
               disabled={weekend}
               onClick={() => onToggleDay(dateStr)}
               onContextMenu={(e) => handleContextMenu(e, dateStr, weekend)}
@@ -122,12 +130,46 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
           className="context-menu" 
           style={{ top: menuPos.y, left: menuPos.x }}
         >
-          <div className="menu-header">Select Status</div>
-          <button onClick={() => handleMenuAction('WFO')} className="menu-item wfo">Mark as WFO</button>
-          <button onClick={() => handleMenuAction('Leave')} className="menu-item leave">Mark as Leave</button>
-          <button onClick={() => handleMenuAction('Holiday')} className="menu-item holiday">Mark as Holiday</button>
+          <div className="menu-header">{format(new Date(menuPos.dateStr), 'MMM d, yyyy')}</div>
+          
+          <button 
+            onClick={() => handleMenuAction('WFO')} 
+            className={`menu-item wfo ${dayStatuses[menuPos.dateStr] === 'WFO' ? 'active' : ''}`}
+          >
+            <div className="flex items-center">
+              <span className="status-dot"></span>
+              Plan WFO
+            </div>
+            {dayStatuses[menuPos.dateStr] === 'WFO' && <Check size={14} className="text-indigo" />}
+          </button>
+          
+          <button 
+            onClick={() => handleMenuAction('Leave')} 
+            className={`menu-item leave ${dayStatuses[menuPos.dateStr] === 'Leave' ? 'active' : ''}`}
+          >
+            <div className="flex items-center">
+              <span className="status-dot"></span>
+              Mark as Leave
+            </div>
+            {dayStatuses[menuPos.dateStr] === 'Leave' && <Check size={14} className="text-indigo" />}
+          </button>
+          
+          <button 
+            onClick={() => handleMenuAction('Holiday')} 
+            className={`menu-item holiday ${dayStatuses[menuPos.dateStr] === 'Holiday' ? 'active' : ''}`}
+          >
+            <div className="flex items-center">
+              <span className="status-dot"></span>
+              Mark as Holiday
+            </div>
+            {dayStatuses[menuPos.dateStr] === 'Holiday' && <Check size={14} className="text-indigo" />}
+          </button>
+          
           <div className="menu-divider"></div>
-          <button onClick={() => handleMenuAction(null)} className="menu-item clear">Clear</button>
+          
+          <button onClick={() => handleMenuAction(null)} className="menu-item clear justify-center">
+            Clear date
+          </button>
         </div>
       )}
     </div>

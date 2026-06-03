@@ -9,7 +9,7 @@
 .calendar-header {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 4px;
   margin-bottom: 8px;
 }
 
@@ -24,12 +24,12 @@
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 4px;
 }
 
 .calendar-cell {
   aspect-ratio: 1;
-  min-height: 44px;
+  min-height: 32px;
   border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
@@ -37,8 +37,13 @@
   font-size: 0.875rem;
   font-weight: 500;
   position: relative;
-  transition: all 0.2s;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
   border: 2px solid transparent;
+}
+
+@keyframes cellSelect {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 .calendar-cell.empty {
@@ -61,6 +66,7 @@
   background-color: var(--color-indigo);
   color: white;
   box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+  animation: cellSelect 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .calendar-cell.wfo:hover {
@@ -77,6 +83,7 @@
 .calendar-cell.leave {
   background-color: #fef3c7;
   color: #d97706;
+  animation: cellSelect 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .calendar-cell.leave:hover {
@@ -87,6 +94,7 @@
 .calendar-cell.holiday {
   background-color: #ffe4e6;
   color: #e11d48;
+  animation: cellSelect 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .calendar-cell.holiday:hover {
@@ -95,7 +103,25 @@
 }
 
 .calendar-cell.today {
-  border-color: var(--color-border);
+  border-color: var(--color-indigo);
+  font-weight: 700;
+}
+
+.calendar-cell.wfo.today {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.calendar-cell.available.current-week {
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.calendar-cell.available.current-week:hover {
+  background-color: rgba(79, 70, 229, 0.1);
+  border-color: rgba(79, 70, 229, 0.3);
+}
+
+.calendar-cell.weekend.current-week {
+  background-color: rgba(79, 70, 229, 0.02);
 }
 
 /* Custom Tooltip */
@@ -149,7 +175,7 @@
   border-radius: var(--radius-md);
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
   padding: 8px;
-  width: 160px;
+  width: 180px;
   border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -160,33 +186,55 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-light);
-  padding: 6px 8px;
+  padding: 6px 12px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-bottom: 4px;
 }
 
 .menu-item {
   text-align: left;
-  padding: 8px;
+  padding: 8px 12px;
   font-size: 0.875rem;
   font-weight: 500;
+  color: var(--text-main);
   border-radius: var(--radius-sm);
-  transition: background-color 0.15s;
+  transition: all 0.15s;
   background: transparent;
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .menu-item:hover {
   background-color: var(--color-available-bg);
 }
 
-.menu-item.wfo { color: var(--color-indigo); }
-.menu-item.leave { color: #d97706; }
-.menu-item.holiday { color: #e11d48; }
+.menu-item.active {
+  background-color: rgba(79, 70, 229, 0.05);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 12px;
+  flex-shrink: 0;
+}
+
+.menu-item.wfo .status-dot { background-color: var(--color-indigo); }
+.menu-item.leave .status-dot { background-color: #d97706; }
+.menu-item.holiday .status-dot { background-color: #e11d48; }
+
 .menu-item.clear { color: var(--text-muted); }
+.menu-item.clear:hover { 
+  background-color: #fee2e2; 
+  color: #ef4444; 
+}
 
 .menu-divider {
   height: 1px;
   background-color: var(--color-border);
-  margin: 4px 0;
+  margin: 6px 0;
 }
