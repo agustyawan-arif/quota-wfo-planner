@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
 import PeriodSelector from './PeriodSelector';
 import ProgressSummary from './ProgressSummary';
 import CalendarGrid from './CalendarGrid';
