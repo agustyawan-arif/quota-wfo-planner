@@ -19,7 +19,7 @@ export default function ProgressSummary({ plannedDays, requiredQuota }: Progress
   } else if (plannedDays < requiredQuota) {
     subText = `Only ${requiredQuota - plannedDays} more to go`;
   } else if (plannedDays === requiredQuota) {
-    mainText = 'Quota completed 🎉';
+    mainText = 'Quota completed';
     subText = 'You’re good for this period.';
     isComplete = true;
   } else {

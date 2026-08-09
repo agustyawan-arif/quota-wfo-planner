@@ -5,12 +5,12 @@ export type EmployeeGrade = 'A-C' | 'D-E';
 export type DayStatus = 'WFO' | 'Leave' | 'Holiday';
 export type DayStatuses = Record<string, DayStatus>;
 
-export function getBaseQuota(grade: EmployeeGrade): number {
-  return grade === 'A-C' ? 20 : 16;
+export function getBaseWfoQuota(grade: EmployeeGrade, totalWorkingDays: number): number {
+  return grade === 'A-C' ? totalWorkingDays : Math.max(0, totalWorkingDays - 4);
 }
 
-export function getRequiredQuota(grade: EmployeeGrade, leaveCount: number, holidayCount: number): number {
-  const base = getBaseQuota(grade);
+export function getRequiredQuota(grade: EmployeeGrade, totalWorkingDays: number, leaveCount: number, holidayCount: number): number {
+  const base = getBaseWfoQuota(grade, totalWorkingDays);
   return Math.max(0, base - leaveCount - holidayCount);
 }
 

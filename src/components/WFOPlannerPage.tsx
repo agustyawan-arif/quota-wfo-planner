@@ -7,7 +7,7 @@ import PlannerControls from './PlannerControls';
 import OnboardingHelper from './OnboardingHelper';
 import ConfirmDialog from './ConfirmDialog';
 import { getDefaultPeriod, getPeriodNavigation, getDaysInPeriod, isWeekend, formatDateStr } from '../utils/dateUtils';
-import { getRequiredQuota, autoSelectWFODays, getBaseQuota, type EmployeeGrade, type DayStatuses, type DayStatus } from '../utils/quotaUtils';
+import { getRequiredQuota, autoSelectWFODays, getBaseWfoQuota, type EmployeeGrade, type DayStatuses, type DayStatus } from '../utils/quotaUtils';
 import { ID_HOLIDAYS } from '../data/holidays';
 import { format, getWeek } from 'date-fns';
 
@@ -49,7 +49,11 @@ export default function WFOPlannerPage() {
     Object.values(dayStatuses).filter(s => s === 'WFO').length
   , [dayStatuses]);
   
-  const requiredQuota = useMemo(() => getRequiredQuota(grade, leaveCount, holidayCount), [grade, leaveCount, holidayCount]);
+  const totalWorkingDays = useMemo(() => 
+    periodDays.filter(d => !isWeekend(d)).length
+  , [periodDays]);
+  
+  const requiredQuota = useMemo(() => getRequiredQuota(grade, totalWorkingDays, leaveCount, holidayCount), [grade, totalWorkingDays, leaveCount, holidayCount]);
 
   const periodKey = currentStart.getTime().toString();
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -119,7 +123,7 @@ export default function WFOPlannerPage() {
     
     const mergedLeaveCount = Object.entries(autoStatuses).filter(([dateStr, s]) => s === 'Leave' && !isWeekend(new Date(dateStr))).length;
     const mergedHolidayCount = Object.entries(autoStatuses).filter(([dateStr, s]) => s === 'Holiday' && !isWeekend(new Date(dateStr))).length;
-    const mergedQuota = getRequiredQuota(grade, mergedLeaveCount, mergedHolidayCount);
+    const mergedQuota = getRequiredQuota(grade, totalWorkingDays, mergedLeaveCount, mergedHolidayCount);
     
     setDayStatuses(autoSelectWFODays(periodDays, mergedQuota, grade, autoStatuses));
   }, [periodKey, grade, periodDays, hasLoaded]);
@@ -210,13 +214,13 @@ export default function WFOPlannerPage() {
       }
     });
 
-    const baselineQuota = getRequiredQuota(targetGrade, baselineLeaveCount, baselineHolidayCount);
+    const baselineQuota = getRequiredQuota(targetGrade, totalWorkingDays, baselineLeaveCount, baselineHolidayCount);
     setDayStatuses(autoSelectWFODays(periodDays, baselineQuota, targetGrade, baselineStatuses));
   };
 
   const handleCopySummary = async () => {
     const periodText = `${format(currentStart, 'd MMM')} – ${format(currentEnd, 'd MMM')}`;
-    const base = getBaseQuota(grade);
+    const base = getBaseWfoQuota(grade, totalWorkingDays);
     
     // Group dates by week
     const sortedWfoDates = Object.entries(dayStatuses)
@@ -322,6 +326,9 @@ ${wfoText || 'None'}`;
           setGrade={handleGradeChange} 
           leaveCount={leaveCount}
           holidayCount={holidayCount}
+          totalWorkingDays={totalWorkingDays}
+          requiredQuota={requiredQuota}
+          plannedDays={wfoCount}
           onReset={handleReset}
           onCopy={handleCopySummary}
           onExport={handleExportImage}
