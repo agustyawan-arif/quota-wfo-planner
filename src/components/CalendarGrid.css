@@ -144,8 +144,6 @@
 .calendar-cell.available {
   background-color: var(--color-available-bg);
   color: var(--text-main);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
 .calendar-cell.available:hover {
@@ -169,8 +167,6 @@
 .calendar-cell.weekend {
   background-color: var(--color-weekend-bg);
   color: var(--color-weekend-text);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
   cursor: not-allowed;
 }
 

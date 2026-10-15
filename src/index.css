@@ -358,9 +358,9 @@
   /* Liquid Glass Card Tokens - Haunted Quota */
   --card-glass-bg: linear-gradient(
     145deg,
-    rgba(32, 16, 48, 0.60) 0%,
-    rgba(48, 22, 74, 0.42) 50%,
-    rgba(24, 10, 38, 0.56) 100%
+    rgba(32, 16, 48, 0.78) 0%,
+    rgba(48, 22, 74, 0.65) 50%,
+    rgba(24, 10, 38, 0.72) 100%
   );
   --card-glass-border: 1px solid rgba(249, 115, 22, 0.38);
   --card-glass-shadow: 
@@ -418,7 +418,6 @@ body {
   transition: 
     opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-  will-change: opacity, transform;
 }
 
 .theme-bg-wfc {
@@ -539,17 +538,21 @@ input {
   border: var(--card-glass-border);
   box-shadow: var(--card-glass-shadow);
   padding: 24px;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  isolation: isolate;
   transition: 
     background 0.65s cubic-bezier(0.4, 0, 0.2, 1),
     border 0.65s ease,
     box-shadow 0.65s ease,
-    backdrop-filter 0.65s ease,
-    -webkit-backdrop-filter 0.65s ease,
     transform 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) translateZ(0);
+  -webkit-transform: translateY(-2px) translateZ(0);
   box-shadow: 
     var(--card-glass-shadow),
     0 25px 45px -8px rgba(0, 0, 0, 0.08);

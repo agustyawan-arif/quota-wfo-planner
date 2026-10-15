@@ -5,8 +5,6 @@
   background-color: var(--color-available-bg);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .theme-grid-container {
@@ -17,8 +15,6 @@
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
   padding: 4px;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .theme-grid-new {
@@ -147,8 +143,6 @@
   background-color: var(--color-available-bg);
   border-radius: var(--radius-sm);
   border: 1px solid var(--color-border);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   transition: border-color 0.2s;
 }
 
@@ -199,8 +193,6 @@
   padding: 12px;
   font-size: 0.8125rem;
   line-height: 1.5;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 }
 
 .helper-box .icon-info {
