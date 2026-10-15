@@ -30,21 +30,21 @@ export default function ProgressSummary({ plannedDays, requiredQuota }: Progress
 
   return (
     <div className="progress-summary flex-col gap-2">
-      <div className="flex justify-between items-center">
-        <div className="flex-col gap-1">
+      <div className="flex justify-between items-center gap-3">
+        <div className="flex-col gap-1 flex-1 min-w-0">
           <div className="text-indigo text-sm font-semibold">
             <span key={plannedDays} className="animate-update">{mainText}</span>
           </div>
-          <div className="flex items-center gap-1 text-xs text-muted mt-1">
-            {plannedDays > 0 && <CheckCircle2 size={14} className={isComplete ? 'text-indigo' : 'text-light'} />}
-            <span>{subText}</span>
+          <div className="flex items-center gap-1.5 text-xs text-muted mt-1">
+            {plannedDays > 0 && <CheckCircle2 size={14} className={isComplete ? 'text-indigo flex-shrink-0' : 'text-light flex-shrink-0'} />}
+            <span className="truncate">{subText}</span>
           </div>
         </div>
-        <div className="flex-col items-end gap-1">
+        <div className="flex-col items-end gap-1 flex-shrink-0" style={{ flexShrink: 0 }}>
           <div key={percentage} className="text-indigo font-bold animate-update" style={{ fontSize: '1.5rem', lineHeight: 1 }}>
             {percentage}%
           </div>
-          <div className="text-xs text-muted font-medium" style={{ letterSpacing: '0.05em' }}>
+          <div className="text-xs text-muted font-medium whitespace-nowrap" style={{ letterSpacing: '0.05em' }}>
             COMPLETE
           </div>
         </div>

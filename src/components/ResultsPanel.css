@@ -23,22 +23,37 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   padding: 12px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .status-banner {
   padding: 10px 12px;
   border-radius: var(--radius-sm);
   margin-top: 8px;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .status-banner.warning {
-  background-color: #fef2f2;
-  border: 1px solid #fee2e2;
+  background-color: var(--color-status-danger-bg);
+  border: 1px solid var(--color-status-danger-border);
+  color: var(--color-status-danger-text);
 }
 
 .status-banner.success {
-  background-color: #f0fdf4;
-  border: 1px solid #dcfce7;
+  background-color: var(--color-status-success-bg);
+  border: 1px solid var(--color-status-success-border);
+  color: var(--color-status-success-text);
+}
+
+.status-banner-icon {
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.status-banner-text {
+  font-weight: 600;
+  color: currentColor;
 }
 
 .section-divider {

@@ -1,7 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,500;0,6..96,600;0,6..96,700;1,6..96,500&family=EB+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Hanken+Grotesk:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Rubik:ital,wght@0,500;0,600;0,700;1,500&display=swap');
 
-:root {
-  /* Color Palette */
+:root, [data-theme="default"] {
+  /* Color Palette - Default Indigo */
   --bg-main: #f8f9fc;
   --bg-card: #ffffff;
   
@@ -12,17 +12,41 @@
   --color-indigo: #4f46e5;
   --color-indigo-hover: #4338ca;
   --color-indigo-light: #e0e7ff;
+  --color-indigo-glow: rgba(79, 70, 229, 0.16);
+  --shadow-btn: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+  --shadow-wfo: 0 4px 10px rgba(79, 70, 229, 0.3);
   
   --color-holiday-bg: #fce8e8;
   --color-holiday-dot: #ef4444;
   
-  --color-weekend-bg: #f1f5f9;
+  --color-weekend-bg: rgba(241, 245, 249, 0.60);
   --color-weekend-text: #94a3b8;
   
-  --color-available-bg: #f8fafc;
-  --color-available-hover: #f1f5f9;
+  --color-available-bg: rgba(241, 245, 249, 0.65);
+  --color-available-hover: rgba(226, 232, 240, 0.85);
   
-  --color-border: #e2e8f0;
+  --color-border: #cbd5e1;
+  
+  --color-success: #10b981;
+  --color-status-success-bg: #f0fdf4;
+  --color-status-success-text: #15803d;
+  --color-status-success-border: #dcfce7;
+
+  --color-status-warning-bg: #fef3c7;
+  --color-status-warning-text: #b45309;
+  --color-status-warning-border: #fde68a;
+
+  --color-status-danger-bg: #fef2f2;
+  --color-status-danger-text: #b91c1c;
+  --color-status-danger-border: #fee2e2;
+
+  --color-helper-bg: rgba(224, 231, 255, 0.70);
+  --color-helper-text: #4338ca;
+  --color-helper-border: #c7d2fe;
+  --color-helper-title: #1e3a8a;
+  
+  --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
   
   --radius-sm: 8px;
   --radius-md: 12px;
@@ -32,6 +56,319 @@
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --shadow-card: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+
+  /* Liquid Glass Card Tokens - Default */
+  --card-glass-bg: rgba(255, 255, 255, 0.72);
+  --card-glass-border: 1px solid rgba(255, 255, 255, 0.85);
+  --card-glass-shadow: 
+    0 16px 36px -4px rgba(15, 23, 42, 0.08),
+    0 4px 12px -2px rgba(15, 23, 42, 0.04),
+    inset 0 1.5px 1px 0 rgba(255, 255, 255, 0.95);
+  --card-glass-backdrop: blur(16px) saturate(160%);
+}
+
+[data-theme="wfc"] {
+  /* Color Palette - Work From Cafe (from wfc.md) */
+  --bg-main: #fff8f3;
+  --bg-card: rgba(255, 255, 255, 0.70);
+  
+  --text-main: #201b12;
+  --text-muted: #4f443f;
+  --text-light: #82746e;
+  
+  --color-indigo: #382216; /* Dark roast espresso */
+  --color-indigo-hover: #4e3120;
+  --color-indigo-light: #f7ecde;
+  --color-indigo-glow: rgba(56, 34, 22, 0.16);
+  --shadow-btn: 0 4px 6px -1px rgba(56, 34, 22, 0.2);
+  --shadow-wfo: 0 4px 10px rgba(56, 34, 22, 0.25);
+  
+  --color-holiday-bg: #ffdad6;
+  --color-holiday-dot: #ba1a1a;
+  
+  --color-weekend-bg: rgba(236, 225, 211, 0.55);
+  --color-weekend-text: #82746e;
+  
+  --color-available-bg: rgba(253, 242, 228, 0.55);
+  --color-available-hover: rgba(247, 236, 222, 0.85);
+  
+  --color-border: rgba(56, 34, 22, 0.14);
+  
+  /* Matcha Green & Botanical status */
+  --color-success: #4f772d;
+  --color-status-success-bg: #eaf3e3;
+  --color-status-success-text: #2f5617;
+  --color-status-success-border: #c8e2ba;
+
+  /* Terracotta & Caramel warning */
+  --color-status-warning-bg: #fdf2e4;
+  --color-status-warning-text: #794827;
+  --color-status-warning-border: #febb90;
+
+  /* Deep Terracotta error */
+  --color-status-danger-bg: #ffdad6;
+  --color-status-danger-text: #93000a;
+  --color-status-danger-border: #ffb4ab;
+
+  --color-helper-bg: rgba(247, 236, 222, 0.60);
+  --color-helper-text: #4f443f;
+  --color-helper-border: #d3c3bc;
+  --color-helper-title: #201b12;
+  
+  --font-family-base: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'EB Garamond', Georgia, serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  --shadow-sm: 0 1px 3px rgba(56, 34, 22, 0.04);
+  --shadow-md: 0 4px 8px -1px rgba(56, 34, 22, 0.08);
+  --shadow-lg: 0 10px 18px -3px rgba(56, 34, 22, 0.10);
+  --shadow-card: 0 20px 25px -5px rgba(56, 34, 22, 0.06), 0 8px 10px -6px rgba(56, 34, 22, 0.04);
+
+  /* Liquid Glass Card Tokens - Warm Cafe */
+  --card-glass-bg: linear-gradient(
+    145deg,
+    rgba(255, 252, 247, 0.64) 0%,
+    rgba(253, 241, 227, 0.44) 45%,
+    rgba(245, 226, 206, 0.55) 100%
+  );
+  --card-glass-border: 1px solid rgba(255, 255, 255, 0.65);
+  --card-glass-shadow: 
+    0 24px 48px -10px rgba(56, 34, 22, 0.22),
+    0 4px 12px 0 rgba(56, 34, 22, 0.08),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.90),
+    inset 0 -1.5px 3px 0 rgba(133, 82, 48, 0.20);
+  --card-glass-backdrop: blur(20px) saturate(165%) contrast(104%);
+}
+
+[data-theme="wfa"] {
+  /* Color Palette - Coastal Nomad Horizon (from wfa.md) */
+  --bg-main: #faf8ff;
+  --bg-card: rgba(255, 255, 255, 0.70);
+  
+  --text-main: #0f172a; /* Deep abyss slate */
+  --text-muted: #3e4850;
+  --text-light: #6e7881;
+  
+  --color-indigo: #006591; /* Deep ocean cyan core */
+  --color-indigo-hover: #004c6e;
+  --color-indigo-light: #e0f2fe;
+  --color-indigo-glow: rgba(14, 165, 233, 0.20);
+  --shadow-btn: 0 4px 10px rgba(14, 165, 233, 0.25);
+  --shadow-wfo: 0 4px 12px rgba(0, 101, 145, 0.30);
+  
+  --color-holiday-bg: #ffdad6;
+  --color-holiday-dot: #ba1a1a;
+  
+  --color-weekend-bg: rgba(226, 232, 240, 0.55);
+  --color-weekend-text: #64748b;
+  
+  --color-available-bg: rgba(240, 247, 255, 0.55);
+  --color-available-hover: rgba(224, 242, 254, 0.85);
+  
+  --color-border: #bec8d2;
+  
+  /* Status Success - Coastal Green */
+  --color-success: #15803d;
+  --color-status-success-bg: #f0fdf4;
+  --color-status-success-text: #15803d;
+  --color-status-success-border: #bbf7d0;
+
+  /* Status Warning - Sun-baked Terracotta & Coral (#EA580C) */
+  --color-status-warning-bg: #fff7ed;
+  --color-status-warning-text: #c2410c;
+  --color-status-warning-border: #fed7aa;
+
+  /* Status Danger - Error Red */
+  --color-status-danger-bg: #fef2f2;
+  --color-status-danger-text: #b91c1c;
+  --color-status-danger-border: #fee2e2;
+
+  --color-helper-bg: rgba(240, 249, 255, 0.60);
+  --color-helper-text: #0369a1;
+  --color-helper-border: #bae6fd;
+  --color-helper-title: #0c4a6e;
+  
+  --font-family-base: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Bodoni Moda', Georgia, serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(14, 165, 233, 0.08), 0 2px 4px -1px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 10px 24px -4px rgba(14, 165, 233, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+  --shadow-card: 0 20px 30px -6px rgba(14, 165, 233, 0.08), 0 8px 12px -4px rgba(15, 23, 42, 0.04);
+
+  /* Liquid Glass Card Tokens - Coastal Nomad */
+  --card-glass-bg: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.60) 0%,
+    rgba(230, 246, 255, 0.42) 45%,
+    rgba(204, 235, 255, 0.52) 100%
+  );
+  --card-glass-border: 1px solid rgba(255, 255, 255, 0.75);
+  --card-glass-shadow: 
+    0 24px 48px -10px rgba(0, 101, 145, 0.22),
+    0 4px 12px 0 rgba(0, 101, 145, 0.08),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 3px 0 rgba(14, 165, 233, 0.22);
+  --card-glass-backdrop: blur(20px) saturate(175%) contrast(104%);
+}
+
+[data-theme="wfo"] {
+  /* Color Palette - Executive Hybrid Suite (from wfo.md) */
+  --bg-main: #f8f9ff;
+  --bg-card: rgba(255, 255, 255, 0.70);
+  
+  --text-main: #0b1c30; /* Deep executive navy slate */
+  --text-muted: #454652;
+  --text-light: #767683;
+  
+  --color-indigo: #2b3990; /* Mascot rich navy */
+  --color-indigo-hover: #1e2865;
+  --color-indigo-light: #eff4ff;
+  --color-indigo-glow: rgba(43, 57, 144, 0.20);
+  --shadow-btn: 0 4px 10px rgba(43, 57, 144, 0.25);
+  --shadow-wfo: 0 4px 12px rgba(16, 32, 122, 0.30);
+  
+  --color-holiday-bg: #ffdad6;
+  --color-holiday-dot: #ba1a1a;
+  
+  --color-weekend-bg: rgba(226, 232, 240, 0.55);
+  --color-weekend-text: #64748b;
+  
+  --color-available-bg: rgba(239, 244, 255, 0.55);
+  --color-available-hover: rgba(229, 238, 255, 0.85);
+  
+  --color-border: #c6c5d3;
+  
+  /* Status Success - Executive Green */
+  --color-success: #15803d;
+  --color-status-success-bg: #f0fdf4;
+  --color-status-success-text: #15803d;
+  --color-status-success-border: #bbf7d0;
+
+  /* Status Warning - Gold & Amber */
+  --color-status-warning-bg: #fff8e1;
+  --color-status-warning-text: #b78103;
+  --color-status-warning-border: #ffe082;
+
+  /* Status Danger - Executive Crimson */
+  --color-status-danger-bg: #fef2f2;
+  --color-status-danger-text: #b91c1c;
+  --color-status-danger-border: #fee2e2;
+
+  --color-helper-bg: rgba(239, 244, 255, 0.60);
+  --color-helper-text: #344054;
+  --color-helper-border: #d0d5dd;
+  --color-helper-title: #0b1c30;
+  
+  --font-family-base: 'Manrope', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  --shadow-sm: 0 1px 3px rgba(11, 28, 48, 0.04);
+  --shadow-md: 0 4px 12px -2px rgba(43, 57, 144, 0.08), 0 2px 4px -1px rgba(11, 28, 48, 0.04);
+  --shadow-lg: 0 10px 24px -4px rgba(43, 57, 144, 0.12), 0 4px 8px -2px rgba(11, 28, 48, 0.05);
+  --shadow-card: 0 20px 30px -6px rgba(43, 57, 144, 0.08), 0 8px 12px -4px rgba(11, 28, 48, 0.04);
+
+  /* Liquid Glass Card Tokens - Executive Suite */
+  --card-glass-bg: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.65) 0%,
+    rgba(238, 244, 255, 0.44) 45%,
+    rgba(220, 232, 255, 0.54) 100%
+  );
+  --card-glass-border: 1px solid rgba(255, 255, 255, 0.80);
+  --card-glass-shadow: 
+    0 24px 48px -10px rgba(16, 32, 122, 0.20),
+    0 4px 12px 0 rgba(16, 32, 122, 0.06),
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1.5px 3px 0 rgba(43, 57, 144, 0.18);
+  --card-glass-backdrop: blur(20px) saturate(165%) contrast(104%);
+}
+
+[data-theme="halloween"] {
+  /* Color Palette - Haunted Quota (from halloween.md) */
+  --bg-main: #0f0914; /* Deep subterranean obsidian */
+  --bg-card: rgba(30, 17, 42, 0.68);
+  
+  --text-main: #f3f0f7; /* Soft eerie mist */
+  --text-muted: #a79bb7; /* Spectral lavender */
+  --text-light: #766887;
+  
+  --color-indigo: #f97316; /* Pumpkin Flame */
+  --color-indigo-hover: #ea580c;
+  --color-indigo-light: #3d2417;
+  --color-indigo-glow: rgba(249, 115, 22, 0.35);
+  --shadow-btn: 0 4px 12px rgba(249, 115, 22, 0.35);
+  --shadow-wfo: 0 4px 14px rgba(249, 115, 22, 0.40);
+  
+  --color-holiday-bg: #4a151b;
+  --color-holiday-dot: #ff6b6b;
+  
+  --color-weekend-bg: rgba(28, 16, 36, 0.55);
+  --color-weekend-text: #6b5a7d;
+  
+  --color-available-bg: rgba(39, 26, 51, 0.55);
+  --color-available-hover: rgba(50, 36, 62, 0.80);
+  
+  --color-border: rgba(167, 139, 125, 0.25);
+  
+  /* Status Success - Ghost Cyan / Ecto Green (#2DD4BF) */
+  --color-success: #2dd4bf;
+  --color-status-success-bg: rgba(45, 212, 191, 0.15);
+  --color-status-success-text: #2dd4bf;
+  --color-status-success-border: rgba(45, 212, 191, 0.30);
+
+  /* Status Warning - Candlelight Gold (#FBBF24) */
+  --color-status-warning-bg: rgba(251, 191, 36, 0.15);
+  --color-status-warning-text: #fbbf24;
+  --color-status-warning-border: rgba(251, 191, 36, 0.30);
+
+  /* Status Danger - Error Crimson */
+  --color-status-danger-bg: rgba(255, 107, 107, 0.15);
+  --color-status-danger-text: #ff8585;
+  --color-status-danger-border: rgba(255, 107, 107, 0.30);
+
+  --color-helper-bg: rgba(38, 22, 56, 0.60);
+  --color-helper-text: #e0c0b1;
+  --color-helper-border: #4a2c68;
+  --color-helper-title: #f97316;
+  
+  --font-family-base: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-family-heading: 'Rubik', system-ui, -apple-system, sans-serif;
+  
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 28px rgba(0, 0, 0, 0.6);
+  --shadow-card: 0 20px 40px -8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(249, 115, 22, 0.08);
+
+  /* Liquid Glass Card Tokens - Haunted Quota */
+  --card-glass-bg: linear-gradient(
+    145deg,
+    rgba(32, 16, 48, 0.60) 0%,
+    rgba(48, 22, 74, 0.42) 50%,
+    rgba(24, 10, 38, 0.56) 100%
+  );
+  --card-glass-border: 1px solid rgba(249, 115, 22, 0.38);
+  --card-glass-shadow: 
+    0 24px 50px -8px rgba(0, 0, 0, 0.85),
+    0 0 32px rgba(249, 115, 22, 0.18),
+    inset 0 1.5px 1.5px 0 rgba(255, 182, 144, 0.35),
+    inset 0 -1.5px 3px 0 rgba(249, 115, 22, 0.25);
+  --card-glass-backdrop: blur(20px) saturate(180%) contrast(110%);
 }
 
 * {
@@ -40,27 +377,139 @@
   padding: 0;
 }
 
-html, body {
+html {
   min-height: 100vh;
+  background-color: var(--bg-main);
+  transition: background-color 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: hidden;
 }
 
 body {
-  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  background-color: var(--bg-main);
+  min-height: 100vh;
+  font-family: var(--font-family-base);
   color: var(--text-main);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   display: flex;
   flex-direction: column;
+  position: relative;
+  background-color: transparent;
+  transition: color 0.4s ease;
+  overflow-x: hidden;
+}
+
+/* Multi-layer Background Container for Butter-Smooth Crossfades */
+.theme-bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.theme-bg-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: 
+    opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.theme-bg-wfc {
+  background-image: 
+    linear-gradient(135deg, rgba(255, 248, 243, 0.38) 0%, rgba(253, 242, 228, 0.48) 100%),
+    url('/backgrounds/wfc.webp');
+}
+
+.theme-bg-wfa {
+  background-image: 
+    linear-gradient(135deg, rgba(250, 248, 255, 0.32) 0%, rgba(226, 231, 255, 0.42) 100%),
+    url('/backgrounds/wfa.webp');
+}
+
+.theme-bg-wfo {
+  background-image: 
+    linear-gradient(135deg, rgba(248, 249, 255, 0.35) 0%, rgba(220, 233, 255, 0.45) 100%),
+    url('/backgrounds/wfo.webp');
+}
+
+.theme-bg-halloween {
+  background-image: 
+    linear-gradient(135deg, rgba(15, 9, 20, 0.40) 0%, rgba(33, 17, 47, 0.50) 100%),
+    url('/backgrounds/halloween.webp');
+}
+
+[data-theme="wfc"] .theme-bg-wfc {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-theme="wfa"] .theme-bg-wfa {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-theme="wfo"] .theme-bg-wfo {
+  opacity: 1;
+  transform: scale(1);
+}
+
+[data-theme="halloween"] .theme-bg-halloween {
+  opacity: 1;
+  transform: scale(1);
+}
+
+h1, h2, h3, .heading-font {
+  font-family: var(--font-family-heading);
+}
+
+[data-theme="wfc"] h1,
+[data-theme="wfc"] h2,
+[data-theme="wfc"] h3 {
+  font-family: var(--font-family-heading);
+  letter-spacing: -0.01em;
+}
+
+[data-theme="wfa"] h1,
+[data-theme="wfa"] h2,
+[data-theme="wfa"] h3 {
+  font-family: var(--font-family-heading);
+  letter-spacing: -0.015em;
+}
+
+[data-theme="wfo"] h1,
+[data-theme="wfo"] h2,
+[data-theme="wfo"] h3 {
+  font-family: var(--font-family-heading);
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+[data-theme="halloween"] h1,
+[data-theme="halloween"] h2,
+[data-theme="halloween"] h3 {
+  font-family: var(--font-family-heading);
+  letter-spacing: -0.01em;
+  font-weight: 700;
 }
 
 #root {
+  position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
   flex: 1;
   width: 100%;
-  padding: 16px;
+  padding: 24px 16px;
+  box-sizing: border-box;
 }
 
 button {
@@ -81,17 +530,29 @@ input {
   font-family: inherit;
 }
 
-/* Base Card Style */
+/* Base Card Style - Liquid Frosted Glass */
 .card {
-  background: var(--bg-card);
+  background: var(--card-glass-bg);
+  backdrop-filter: var(--card-glass-backdrop);
+  -webkit-backdrop-filter: var(--card-glass-backdrop);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
+  border: var(--card-glass-border);
+  box-shadow: var(--card-glass-shadow);
   padding: 24px;
-  transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: 
+    background 0.65s cubic-bezier(0.4, 0, 0.2, 1),
+    border 0.65s ease,
+    box-shadow 0.65s ease,
+    backdrop-filter 0.65s ease,
+    -webkit-backdrop-filter 0.65s ease,
+    transform 0.25s ease;
 }
 
 .card:hover {
-  box-shadow: 0 25px 35px -5px rgb(0 0 0 / 0.05), 0 10px 15px -6px rgb(0 0 0 / 0.05);
+  transform: translateY(-2px);
+  box-shadow: 
+    var(--card-glass-shadow),
+    0 25px 45px -8px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes subtleUpdate {
@@ -110,6 +571,7 @@ input {
   display: flex;
   gap: 20px;
   align-items: stretch;
+  margin: auto 0;
 }
 
 .settings-panel {
@@ -124,6 +586,191 @@ input {
   min-width: 460px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: visible;
+}
+
+/* Floating Mascot in Calendar Card with Mood States */
+.card-mascot-wrapper {
+  position: absolute;
+  bottom: 8px;
+  right: 14px;
+  z-index: 10;
+  user-select: none;
+  animation: mascotFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.card-mascot-img {
+  width: 145px;
+  height: 140px;
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.4s ease;
+  will-change: transform, filter;
+}
+
+/* Mood 1: Happy / Safe */
+.mood-happy .card-mascot-img {
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.18));
+  animation: subtleFloat 3.8s ease-in-out infinite;
+}
+
+/* Mood 2: Cautious / Caution */
+.mood-cautious .card-mascot-img {
+  filter: drop-shadow(0 6px 16px rgba(217, 119, 6, 0.38)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.14));
+  animation: cautiousFloat 2.6s ease-in-out infinite;
+}
+
+/* Mood 3: Warned / Danger */
+.mood-warned .card-mascot-img {
+  filter: drop-shadow(0 6px 20px rgba(239, 68, 68, 0.55)) drop-shadow(0 2px 8px rgba(0, 0, 0, 0.22));
+  animation: warnedTremble 1.8s ease-in-out infinite;
+}
+
+.card-mascot-img:hover {
+  transform: translateY(-6px) scale(1.05) rotate(2deg);
+}
+
+[data-theme="halloween"] .mood-happy .card-mascot-img {
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.65)) drop-shadow(0 0 14px rgba(249, 115, 22, 0.4));
+}
+[data-theme="halloween"] .mood-cautious .card-mascot-img {
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.7)) drop-shadow(0 0 16px rgba(234, 179, 8, 0.5));
+}
+[data-theme="halloween"] .mood-warned .card-mascot-img {
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.75)) drop-shadow(0 0 18px rgba(239, 68, 68, 0.65));
+}
+
+/* Mascot Speech Bubble */
+.mascot-speech-bubble {
+  position: absolute;
+  bottom: calc(100% - 6px);
+  right: 12px;
+  width: max-content;
+  max-width: 210px;
+  background: var(--bg-card);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.16), 0 4px 6px -2px rgba(0, 0, 0, 0.06);
+  border-radius: 14px;
+  padding: 8px 12px;
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px) scale(0.92);
+  transform-origin: bottom right;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s;
+  z-index: 25;
+}
+
+.mascot-speech-bubble.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+.mascot-speech-text {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-main);
+  line-height: 1.4;
+  display: block;
+}
+
+.mascot-speech-bubble .speech-arrow {
+  position: absolute;
+  bottom: -5px;
+  right: 32px;
+  width: 9px;
+  height: 9px;
+  background: var(--bg-card);
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  transform: rotate(45deg);
+}
+
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(1.2deg);
+  }
+}
+
+@keyframes cautiousFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  30% {
+    transform: translateY(-4px) rotate(-1.5deg);
+  }
+  70% {
+    transform: translateY(-2px) rotate(1deg);
+  }
+}
+
+@keyframes warnedTremble {
+  0%, 100% {
+    transform: translateY(0px) scale(1) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-3px) scale(1.02) rotate(-2deg);
+  }
+  40% {
+    transform: translateY(1px) scale(0.99) rotate(2deg);
+  }
+  60% {
+    transform: translateY(-4px) scale(1.01) rotate(-1deg);
+  }
+  80% {
+    transform: translateY(0px) scale(1) rotate(1.5deg);
+  }
+}
+
+@keyframes mascotFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 1024px) {
+  .card-mascot-img {
+    width: 110px;
+    height: 110px;
+  }
+}
+
+@media (max-width: 640px) {
+  .card-mascot-wrapper {
+    bottom: 6px;
+    right: 8px;
+  }
+  .card-mascot-img {
+    width: 76px;
+    height: 76px;
+  }
+  .mascot-speech-bubble {
+    right: 0px;
+    max-width: 175px;
+    padding: 6px 10px;
+    bottom: calc(100% - 2px);
+  }
+  .mascot-speech-text {
+    font-size: 10.5px;
+  }
+  .mascot-speech-bubble .speech-arrow {
+    right: 22px;
+  }
 }
 
 .results-panel-container {
@@ -133,13 +780,16 @@ input {
   flex-direction: column;
 }
 
-@media (max-width: 1160px) {
+/* Tablet Landscape: 881px - 1160px */
+@media (max-width: 1160px) and (min-width: 881px) {
   .layout-container {
     flex-wrap: wrap;
+    justify-content: center;
   }
   .calendar-panel {
     width: 100%;
     order: 1;
+    min-width: 0;
   }
   .settings-panel {
     flex: 1;
@@ -147,19 +797,50 @@ input {
     order: 2;
   }
   .results-panel-container {
-    flex: 1;
+    flex: 1.2;
     min-width: 320px;
     order: 3;
   }
 }
 
-@media (max-width: 768px) {
-  .settings-panel, .calendar-panel, .results-panel-container {
-    width: 100%;
-    min-width: 0;
+/* Mobile & Tablet Portrait: <= 880px (Clean single column vertical stack) */
+@media (max-width: 880px) {
+  #root {
+    padding: 12px 8px;
   }
+
+  .layout-container {
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    width: 100% !important;
+    max-width: 580px;
+    margin: 0 auto;
+    gap: 16px;
+  }
+
+  .calendar-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    order: 1 !important;
+  }
+
+  .results-panel-container {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    order: 2 !important;
+  }
+
+  .settings-panel {
+    width: 100% !important;
+    min-width: 0 !important;
+    flex: none !important;
+    order: 3 !important;
+  }
+
   .card {
-    padding: 16px;
+    padding: 16px 14px;
   }
 }
 
@@ -210,3 +891,75 @@ input {
 .text-indigo { color: var(--color-indigo); }
 
 .w-full { width: 100%; }
+
+/* ==========================================================================
+   Custom Themed Cursors (Default Arrow & Active Pointer)
+   ========================================================================== */
+
+/* Theme: Work From Cafe (WFC) */
+[data-theme="wfc"],
+[data-theme="wfc"] body {
+  cursor: url('/cursors/cursor-wfc.png') 3 1, auto !important;
+}
+[data-theme="wfc"] a,
+[data-theme="wfc"] button:not(:disabled),
+[data-theme="wfc"] [role="button"]:not([aria-disabled="true"]),
+[data-theme="wfc"] input[type="button"]:not(:disabled),
+[data-theme="wfc"] input[type="submit"]:not(:disabled),
+[data-theme="wfc"] .calendar-cell:not(.weekend),
+[data-theme="wfc"] .card-mascot-img,
+[data-theme="wfc"] .card-mascot-wrapper,
+[data-theme="wfc"] .cursor-pointer {
+  cursor: url('/cursors/cursor-wfc-active.png') 11 1, pointer !important;
+}
+
+/* Theme: Work From Anywhere (WFA) */
+[data-theme="wfa"],
+[data-theme="wfa"] body {
+  cursor: url('/cursors/cursor-wfa.png') 3 1, auto !important;
+}
+[data-theme="wfa"] a,
+[data-theme="wfa"] button:not(:disabled),
+[data-theme="wfa"] [role="button"]:not([aria-disabled="true"]),
+[data-theme="wfa"] input[type="button"]:not(:disabled),
+[data-theme="wfa"] input[type="submit"]:not(:disabled),
+[data-theme="wfa"] .calendar-cell:not(.weekend),
+[data-theme="wfa"] .card-mascot-img,
+[data-theme="wfa"] .card-mascot-wrapper,
+[data-theme="wfa"] .cursor-pointer {
+  cursor: url('/cursors/cursor-wfa-active.png') 13 1, pointer !important;
+}
+
+/* Theme: Work From Office (WFO) */
+[data-theme="wfo"],
+[data-theme="wfo"] body {
+  cursor: url('/cursors/cursor-wfo.png') 3 1, auto !important;
+}
+[data-theme="wfo"] a,
+[data-theme="wfo"] button:not(:disabled),
+[data-theme="wfo"] [role="button"]:not([aria-disabled="true"]),
+[data-theme="wfo"] input[type="button"]:not(:disabled),
+[data-theme="wfo"] input[type="submit"]:not(:disabled),
+[data-theme="wfo"] .calendar-cell:not(.weekend),
+[data-theme="wfo"] .card-mascot-img,
+[data-theme="wfo"] .card-mascot-wrapper,
+[data-theme="wfo"] .cursor-pointer {
+  cursor: url('/cursors/cursor-wfo-active.png') 14 1, pointer !important;
+}
+
+/* Theme: Haunted Quota (Halloween) */
+[data-theme="halloween"],
+[data-theme="halloween"] body {
+  cursor: url('/cursors/cursor-halloween.png') 4 1, auto !important;
+}
+[data-theme="halloween"] a,
+[data-theme="halloween"] button:not(:disabled),
+[data-theme="halloween"] [role="button"]:not([aria-disabled="true"]),
+[data-theme="halloween"] input[type="button"]:not(:disabled),
+[data-theme="halloween"] input[type="submit"]:not(:disabled),
+[data-theme="halloween"] .calendar-cell:not(.weekend),
+[data-theme="halloween"] .card-mascot-img,
+[data-theme="halloween"] .card-mascot-wrapper,
+[data-theme="halloween"] .cursor-pointer {
+  cursor: url('/cursors/cursor-halloween-active.png') 22 1, pointer !important;
+}

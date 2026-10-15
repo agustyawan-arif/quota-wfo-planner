@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
 import type { TouchEvent } from 'react';
+import { createPortal } from 'react-dom';
 import { getDay, format, isToday, isSameWeek } from 'date-fns';
 import { Check } from 'lucide-react';
 import { isWeekend, formatDateStr } from '../utils/dateUtils';
 import type { DayStatus, DayStatuses } from '../utils/quotaUtils';
 import { ID_HOLIDAYS } from '../data/holidays';
+import type { AppTheme } from './PlannerControls';
+import { getConditionIcon, type CalendarCondition } from '../utils/themeIcons';
 import './CalendarGrid.css';
 
 interface CalendarGridProps {
@@ -12,11 +15,12 @@ interface CalendarGridProps {
   dayStatuses: DayStatuses;
   onToggleDay: (dateStr: string) => void;
   onSetDayStatus: (dateStr: string, status: DayStatus | null) => void;
+  theme?: AppTheme;
 }
 
 const DAYS_OF_WEEK = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
 
-export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onSetDayStatus }: CalendarGridProps) {
+export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onSetDayStatus, theme = 'default' }: CalendarGridProps) {
   const [menuPos, setMenuPos] = useState<{ x: number, y: number, dateStr: string } | null>(null);
   const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isLongPress = useRef(false);
@@ -44,12 +48,17 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
     e.preventDefault();
     if (weekend) return;
     
-    // Simple bounds checking to keep menu on screen
+    const menuWidth = 190;
+    const menuHeight = 220;
     let x = e.clientX;
     let y = e.clientY;
     
-    if (x > window.innerWidth - 150) x -= 150;
-    if (y > window.innerHeight - 200) y -= 160;
+    if (x + menuWidth > window.innerWidth - 12) {
+      x = Math.max(12, e.clientX - menuWidth);
+    }
+    if (y + menuHeight > window.innerHeight - 12) {
+      y = Math.max(12, e.clientY - menuHeight);
+    }
 
     setMenuPos({ x, y, dateStr });
   };
@@ -65,10 +74,16 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
       longPressTimer.current = null;
       isLongPress.current = true;
       
+      const menuWidth = 190;
+      const menuHeight = 220;
       let x = touchX;
       let y = touchY;
-      if (x > window.innerWidth - 180) x -= 180;
-      if (y > window.innerHeight - 200) y -= 160;
+      if (x + menuWidth > window.innerWidth - 12) {
+        x = Math.max(12, touchX - menuWidth);
+      }
+      if (y + menuHeight > window.innerHeight - 12) {
+        y = Math.max(12, touchY - menuHeight);
+      }
       
       setMenuPos({ x, y, dateStr });
       if (navigator.vibrate) navigator.vibrate(50);
@@ -118,23 +133,29 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
           const currentWeek = isSameWeek(date, new Date(), { weekStartsOn: 1 });
           const dayNumber = format(date, 'd');
           
+          let condition: CalendarCondition = 'available';
           let stateClass = 'available';
           let title = '';
           
           if (weekend) {
+            condition = 'weekend';
             stateClass = 'weekend';
             title = 'Weekend';
           } else if (status === 'Holiday') {
+            condition = 'holiday';
             stateClass = 'holiday';
             title = ID_HOLIDAYS[dateStr] || 'Holiday';
           } else if (status === 'Leave') {
+            condition = 'leave';
             stateClass = 'leave';
             title = 'Leave';
           } else if (status === 'WFO') {
+            condition = 'planned';
             stateClass = 'wfo';
             title = 'Planned WFO';
           }
           
+          const ConditionIcon = getConditionIcon(theme, condition);
           const displayDate = format(date, 'MMM d');
           const tooltip = title ? `${displayDate} — ${title}` : displayDate;
           
@@ -153,65 +174,69 @@ export default function CalendarGrid({ periodDays, dayStatuses, onToggleDay, onS
               onTouchEnd={handleTouchEnd}
               className={`calendar-cell ${stateClass}`}
             >
-              {dayNumber}
+              <span className="cell-date-num">{dayNumber}</span>
+              <span className="cell-status-icon" aria-hidden="true">
+                <ConditionIcon size={26} strokeWidth={2.0} />
+              </span>
             </button>
           );
         })}
       </div>
 
-      {menuPos && (
-        <div 
-          className="menu-backdrop" 
-          onClick={() => setMenuPos(null)} 
-          onContextMenu={(e) => { e.preventDefault(); setMenuPos(null); }}
-        />
-      )}
-      {menuPos && (
-        <div 
-          className="context-menu" 
-          style={{ top: menuPos.y, left: menuPos.x }}
-        >
-          <div className="menu-header">{format(new Date(menuPos.dateStr), 'MMM d, yyyy')}</div>
-          
-          <button 
-            onClick={() => handleMenuAction('WFO')} 
-            className={`menu-item wfo ${dayStatuses[menuPos.dateStr] === 'WFO' ? 'active' : ''}`}
+      {menuPos && createPortal(
+        <>
+          <div 
+            className="menu-backdrop" 
+            onClick={() => setMenuPos(null)} 
+            onContextMenu={(e) => { e.preventDefault(); setMenuPos(null); }}
+          />
+          <div 
+            className="context-menu" 
+            style={{ top: menuPos.y, left: menuPos.x }}
           >
-            <div className="flex items-center">
-              <span className="status-dot"></span>
-              Plan WFO
-            </div>
-            {dayStatuses[menuPos.dateStr] === 'WFO' && <Check size={14} className="text-indigo" />}
-          </button>
-          
-          <button 
-            onClick={() => handleMenuAction('Leave')} 
-            className={`menu-item leave ${dayStatuses[menuPos.dateStr] === 'Leave' ? 'active' : ''}`}
-          >
-            <div className="flex items-center">
-              <span className="status-dot"></span>
-              Mark as Leave
-            </div>
-            {dayStatuses[menuPos.dateStr] === 'Leave' && <Check size={14} className="text-indigo" />}
-          </button>
-          
-          <button 
-            onClick={() => handleMenuAction('Holiday')} 
-            className={`menu-item holiday ${dayStatuses[menuPos.dateStr] === 'Holiday' ? 'active' : ''}`}
-          >
-            <div className="flex items-center">
-              <span className="status-dot"></span>
-              Mark as Holiday
-            </div>
-            {dayStatuses[menuPos.dateStr] === 'Holiday' && <Check size={14} className="text-indigo" />}
-          </button>
-          
-          <div className="menu-divider"></div>
-          
-          <button onClick={() => handleMenuAction(null)} className="menu-item clear justify-center">
-            Clear date
-          </button>
-        </div>
+            <div className="menu-header">{format(new Date(menuPos.dateStr), 'MMM d, yyyy')}</div>
+            
+            <button 
+              onClick={() => handleMenuAction('WFO')} 
+              className={`menu-item wfo ${dayStatuses[menuPos.dateStr] === 'WFO' ? 'active' : ''}`}
+            >
+              <div className="flex items-center">
+                <span className="status-dot"></span>
+                Plan WFO
+              </div>
+              {dayStatuses[menuPos.dateStr] === 'WFO' && <Check size={14} className="text-indigo" />}
+            </button>
+            
+            <button 
+              onClick={() => handleMenuAction('Leave')} 
+              className={`menu-item leave ${dayStatuses[menuPos.dateStr] === 'Leave' ? 'active' : ''}`}
+            >
+              <div className="flex items-center">
+                <span className="status-dot"></span>
+                Mark as Leave
+              </div>
+              {dayStatuses[menuPos.dateStr] === 'Leave' && <Check size={14} className="text-indigo" />}
+            </button>
+            
+            <button 
+              onClick={() => handleMenuAction('Holiday')} 
+              className={`menu-item holiday ${dayStatuses[menuPos.dateStr] === 'Holiday' ? 'active' : ''}`}
+            >
+              <div className="flex items-center">
+                <span className="status-dot"></span>
+                Mark as Holiday
+              </div>
+              {dayStatuses[menuPos.dateStr] === 'Holiday' && <Check size={14} className="text-indigo" />}
+            </button>
+            
+            <div className="menu-divider"></div>
+            
+            <button onClick={() => handleMenuAction(null)} className="menu-item clear justify-center">
+              Clear date
+            </button>
+          </div>
+        </>,
+        document.body
       )}
     </div>
   );

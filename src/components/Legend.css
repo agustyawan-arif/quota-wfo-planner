@@ -2,10 +2,61 @@
   /* margin handled by utility classes */
 }
 
+@media (max-width: 640px) {
+  .legend-container {
+    padding-right: 78px;
+    justify-content: flex-start !important;
+    gap: 8px 12px !important;
+  }
+}
+
+.legend-badge {
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.legend-item:hover .legend-badge {
+  transform: scale(1.15);
+}
+
+.legend-badge.wfo {
+  background-color: var(--color-indigo);
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(79, 70, 229, 0.25);
+}
+
+.legend-badge.available {
+  background-color: var(--color-available-bg);
+  border: 1px solid var(--color-border);
+  color: var(--text-muted);
+}
+
+.legend-badge.leave {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.legend-badge.holiday {
+  background-color: #ffe4e6;
+  color: #e11d48;
+}
+
+.legend-badge.weekend {
+  background-color: var(--color-weekend-bg);
+  color: var(--color-weekend-text);
+}
+
 .legend-color {
   width: 12px;
   height: 12px;
   border-radius: var(--radius-sm);
+  flex-shrink: 0;
 }
 
 .legend-color.wfo {

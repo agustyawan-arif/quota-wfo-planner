@@ -8,16 +8,17 @@ interface PeriodSelectorProps {
   onPrev: () => void;
   onNext: () => void;
   evaluationBadge?: string;
+  title?: string;
 }
 
-export default function PeriodSelector({ start, end, onPrev, onNext, evaluationBadge }: PeriodSelectorProps) {
+export default function PeriodSelector({ start, end, onPrev, onNext, evaluationBadge, title = 'WFO Planner' }: PeriodSelectorProps) {
   const formattedStart = format(start, 'd MMM');
   const formattedEnd = format(end, 'd MMM');
 
   return (
     <div className="period-selector flex items-center justify-between">
-      <div className="flex-col">
-        <h1 className="text-sm font-semibold">WFO Planner</h1>
+      <div className="period-title-container flex-col">
+        <h1 className="text-sm font-semibold">{title}</h1>
         {evaluationBadge && (
           <span className="text-xs font-medium text-muted block mt-0.5" style={{ fontSize: '11px' }}>
             {evaluationBadge}

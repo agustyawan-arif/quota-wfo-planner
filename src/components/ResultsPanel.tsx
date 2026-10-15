@@ -53,8 +53,8 @@ export default function ResultsPanel({
 
           {!isQuotaMet ? (
             <div className="status-banner warning flex gap-2 items-start text-xs">
-              <AlertTriangle size={15} className="shrink-0 text-red-500 mt-0.5" />
-              <div className="text-red-700 leading-snug">
+              <AlertTriangle size={15} className="status-banner-icon mt-0.5" />
+              <div className="leading-snug">
                 <div>Missing <strong>{missingDays} WFO day{missingDays > 1 ? 's' : ''}</strong></div>
                 <div className="text-[11px] opacity-85 mt-0.5">
                   Allowance lost: <strong>Rp {lostAllowance.toLocaleString('id-ID')}</strong>
@@ -63,8 +63,8 @@ export default function ResultsPanel({
             </div>
           ) : (
             <div className="status-banner success flex gap-2 items-center text-xs">
-              <CheckCircle2 size={15} className="shrink-0 text-green-600" />
-              <span className="text-green-700 font-medium">
+              <CheckCircle2 size={15} className="status-banner-icon" />
+              <span className="status-banner-text font-medium">
                 Quota met — meal allowance safe!
               </span>
             </div>

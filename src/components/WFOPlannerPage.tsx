@@ -1,8 +1,8 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import PeriodSelector from './PeriodSelector';
 import CalendarGrid from './CalendarGrid';
 import Legend from './Legend';
-import PlannerControls from './PlannerControls';
+import PlannerControls, { type AppTheme } from './PlannerControls';
 import ResultsPanel from './ResultsPanel';
 import OnboardingHelper from './OnboardingHelper';
 import ConfirmDialog from './ConfirmDialog';
@@ -104,7 +104,77 @@ function getSavedOrGeneratedStatuses(
   return autoSelectWFODays(days, quota, employeeGrade, autoStatuses);
 }
 
+export type MascotMood = 'happy' | 'cautious' | 'warned';
+
+function getMascotMood(status: 'safe' | 'caution' | 'danger'): MascotMood {
+  if (status === 'safe') return 'happy';
+  if (status === 'caution') return 'cautious';
+  return 'warned';
+}
+
+const MASCOT_CONFIG: Record<Exclude<AppTheme, 'default'>, { name: string }> = {
+  wfc: { name: 'Barista Cup' },
+  wfa: { name: 'Nomad Coconut' },
+  wfo: { name: 'Executive Briefcase' },
+  halloween: { name: 'Spooky Pumpkin' },
+};
+
+const MASCOT_DIALOGUES: Record<Exclude<AppTheme, 'default'>, Record<MascotMood, string>> = {
+  wfc: {
+    happy: "Aroma kopi mantap, kuota WFO aman terkendali! ☕✨",
+    cautious: "Kopinya mulai dingin... jangan kebanyakan bolos ngantor ya! ☕👀",
+    warned: "Waduh tumpah! Defisit hari kantor udah lewat batas HR! ☕🚨",
+  },
+  wfa: {
+    happy: "Kerja santai di mana saja, kuota kantor aman! 🌴🥥",
+    cautious: "Ombak makin tinggi, perhatikan sisa jatah WFH-mu ya! 🌴⚠️",
+    warned: "Badai datang! Batas aman evaluasi 9 hari terlewati! 🥥💥",
+  },
+  wfo: {
+    happy: "Target terpenuhi sempurna, HR tersenyum lebar! 💼🎯",
+    cautious: "Briefcase bergetar... kuota aman mulai menipis! 💼📝",
+    warned: "Alarm HR bunyi kencang! Kamu masuk zona resiko evaluasi! 💼⚠️",
+  },
+  halloween: {
+    happy: "Mantra kuotamu ampuh, bebas dari kutukan HR! 🎃🔮",
+    cautious: "Hawa dingin mendekat... hati-hati jangan lengah! 🎃👻",
+    warned: "Kutukan evaluasi bangkit! Batas 9 hari terlanggar! 🎃⚡",
+  },
+};
+
 export default function WFOPlannerPage() {
+  const [theme, setTheme] = useState<AppTheme>(() => {
+    try {
+      const saved = localStorage.getItem('wfo-planner-data');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (parsed.settings?.theme) {
+          return parsed.settings.theme;
+        }
+      }
+    } catch (e) {}
+    return 'halloween';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+
+    if (theme === 'wfc' || theme === 'wfa' || theme === 'wfo' || theme === 'halloween') {
+      const existingPreload = document.querySelector('link[data-bg-preload]');
+      if (existingPreload) {
+        existingPreload.setAttribute('href', `/backgrounds/${theme}.webp`);
+      } else {
+        const link = document.createElement('link');
+        link.rel = 'preload';
+        link.as = 'image';
+        link.type = 'image/webp';
+        link.href = `/backgrounds/${theme}.webp`;
+        link.setAttribute('data-bg-preload', 'true');
+        document.head.appendChild(link);
+      }
+    }
+  }, [theme]);
+
   const [period, setPeriod] = useState(getInitialPeriod);
   const currentStart = period.start;
   const currentEnd = period.end;
@@ -154,6 +224,7 @@ export default function WFOPlannerPage() {
       parsed.settings = {
         ...parsed.settings,
         grade,
+        theme,
         activePeriodStart: currentStart.toISOString(),
         activePeriodEnd: currentEnd.toISOString()
       };
@@ -164,7 +235,7 @@ export default function WFOPlannerPage() {
     } catch (e) {
       console.error('Failed to auto-save', e);
     }
-  }, [dayStatuses, grade, periodKey, currentStart, currentEnd]);
+  }, [dayStatuses, grade, theme, periodKey, currentStart, currentEnd]);
 
   const allSavedSchedules = useMemo(() => {
     try {
@@ -185,6 +256,34 @@ export default function WFOPlannerPage() {
       allSavedSchedules
     );
   }, [currentStart, currentEnd, dayStatuses, grade, allSavedSchedules]);
+
+  const currentMood = getMascotMood(evaluationInfo.status);
+  const [bubblePinned, setBubblePinned] = useState(false);
+  const [isMascotHovered, setIsMascotHovered] = useState(false);
+  const [autoShowBubble, setAutoShowBubble] = useState(false);
+  const prevMoodRef = useRef<MascotMood>(currentMood);
+
+  // Auto-pop speech bubble when mood changes (e.g. going from safe to caution/warned)
+  useEffect(() => {
+    if (prevMoodRef.current !== currentMood) {
+      prevMoodRef.current = currentMood;
+      setAutoShowBubble(true);
+      const timer = setTimeout(() => {
+        setAutoShowBubble(false);
+      }, 4200);
+      return () => clearTimeout(timer);
+    }
+  }, [currentMood]);
+
+  // Preload all 3 mood mascot images for instant switching
+  useEffect(() => {
+    if (theme !== 'default') {
+      (['happy', 'cautious', 'warned'] as MascotMood[]).forEach(m => {
+        const img = new Image();
+        img.src = `/mascots/${theme}-${m}.webp`;
+      });
+    }
+  }, [theme]);
 
   // Handlers
   const handleToggleDay = (dateStr: string) => {
@@ -365,11 +464,20 @@ ${wfoText || 'None'}`;
 
   return (
     <>
+      <div className="theme-bg-container" aria-hidden="true">
+        <div className="theme-bg-layer theme-bg-wfc" />
+        <div className="theme-bg-layer theme-bg-wfa" />
+        <div className="theme-bg-layer theme-bg-wfo" />
+        <div className="theme-bg-layer theme-bg-halloween" />
+      </div>
+
       <div className="layout-container">
         {/* Left Column: Setup & Configuration */}
         <div className="card settings-panel">
           <h2 className="text-sm font-semibold mb-4 text-main">Setup & Settings</h2>
           <PlannerControls 
+            theme={theme}
+            onThemeChange={setTheme}
             grade={grade} 
             setGrade={handleGradeChange} 
             leaveCount={leaveCount}
@@ -383,6 +491,13 @@ ${wfoText || 'None'}`;
         {/* Center Column: Interactive Calendar Workspace */}
         <div className="card calendar-panel">
           <PeriodSelector 
+            title={
+              theme === 'wfc' ? 'Work From Cafe' :
+              theme === 'wfa' ? 'Work From Anywhere' :
+              theme === 'wfo' ? 'Work From Office' :
+              theme === 'halloween' ? 'Haunted Quota' :
+              'WFO Planner'
+            }
             start={currentStart} 
             end={currentEnd} 
             onPrev={handlePrevPeriod} 
@@ -395,9 +510,44 @@ ${wfoText || 'None'}`;
             dayStatuses={dayStatuses} 
             onToggleDay={handleToggleDay} 
             onSetDayStatus={handleSetDayStatus}
+            theme={theme}
           />
           
-          <Legend />
+          <Legend theme={theme} />
+
+          {theme !== 'default' && (
+            <div 
+              className={`card-mascot-wrapper mood-${currentMood}`}
+              onMouseEnter={() => setIsMascotHovered(true)}
+              onMouseLeave={() => setIsMascotHovered(false)}
+              onClick={() => setBubblePinned(prev => !prev)}
+              style={{ cursor: 'pointer', pointerEvents: 'auto' }}
+              role="button"
+              tabIndex={0}
+              aria-label={`${MASCOT_CONFIG[theme]?.name || 'Theme'} mascot, status ${currentMood}`}
+            >
+              <div 
+                className={`mascot-speech-bubble ${isMascotHovered || bubblePinned || autoShowBubble ? 'visible' : ''}`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setBubblePinned(false);
+                  setAutoShowBubble(false);
+                }}
+              >
+                <span className="mascot-speech-text">
+                  {MASCOT_DIALOGUES[theme]?.[currentMood] || "Kuota aman terkendali!"}
+                </span>
+                <div className="speech-arrow" />
+              </div>
+
+              <img 
+                key={`${theme}-${currentMood}`}
+                src={`/mascots/${theme}-${currentMood}.webp`} 
+                alt={`${theme} mascot ${currentMood}`}
+                className="card-mascot-img"
+              />
+            </div>
+          )}
         </div>
 
         {/* Right Column: Overview, Quota & 3-Month Evaluation */}

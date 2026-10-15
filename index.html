@@ -7,6 +7,29 @@
     <meta name="theme-color" content="#4f46e5" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>wfo-quota-planner</title>
+    <script>
+      (function() {
+        try {
+          const saved = localStorage.getItem('wfo-planner-data');
+          let theme = 'halloween';
+          if (saved) {
+            const parsedTheme = JSON.parse(saved)?.settings?.theme;
+            if (parsedTheme) {
+              theme = parsedTheme;
+            }
+          }
+          document.documentElement.setAttribute('data-theme', theme);
+          if (theme === 'wfc' || theme === 'wfa' || theme === 'wfo' || theme === 'halloween') {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.as = 'image';
+            link.type = 'image/webp';
+            link.href = '/backgrounds/' + theme + '.webp';
+            document.head.appendChild(link);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

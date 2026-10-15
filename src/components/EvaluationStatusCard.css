@@ -30,18 +30,18 @@
 }
 
 .eval-pill-direct.pill-safe {
-  background-color: #dcfce7;
-  color: #15803d;
+  background-color: var(--color-status-success-bg);
+  color: var(--color-status-success-text);
 }
 
 .eval-pill-direct.pill-caution {
-  background-color: #fef3c7;
-  color: #b45309;
+  background-color: var(--color-status-warning-bg);
+  color: var(--color-status-warning-text);
 }
 
 .eval-pill-direct.pill-danger {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: var(--color-status-danger-bg);
+  color: var(--color-status-danger-text);
 }
 
 /* Counter Row */
@@ -82,15 +82,15 @@
 }
 
 .counter-number.num-safe {
-  color: #16a34a;
+  color: var(--color-status-success-text);
 }
 
 .counter-number.num-caution {
-  color: #d97706;
+  color: var(--color-status-warning-text);
 }
 
 .counter-number.num-danger {
-  color: #dc2626;
+  color: var(--color-status-danger-text);
 }
 
 .counter-denom {
@@ -104,7 +104,7 @@
   position: relative;
   width: 100%;
   height: 6px;
-  background-color: #e2e8f0;
+  background-color: var(--color-available-hover, #e2e8f0);
   border-radius: 999px;
   overflow: hidden;
   margin-bottom: 14px;
@@ -117,7 +117,7 @@
 }
 
 .eval-bar-fill.fill-safe {
-  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  background: linear-gradient(90deg, var(--color-success, #10b981) 0%, var(--color-status-success-text) 100%);
 }
 
 .eval-bar-fill.fill-caution {
@@ -151,21 +151,21 @@
 }
 
 .eval-banner-box.msg-safe {
-  background-color: #f0fdf4;
-  color: #166534;
-  border: 1px solid #dcfce7;
+  background-color: var(--color-status-success-bg);
+  color: var(--color-status-success-text);
+  border: 1px solid var(--color-status-success-border);
 }
 
 .eval-banner-box.msg-caution {
-  background-color: #fffbeb;
-  color: #92400e;
-  border: 1px solid #fee2e2;
+  background-color: var(--color-status-warning-bg);
+  color: var(--color-status-warning-text);
+  border: 1px solid var(--color-status-warning-border);
 }
 
 .eval-banner-box.msg-danger {
-  background-color: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fee2e2;
+  background-color: var(--color-status-danger-bg);
+  color: var(--color-status-danger-text);
+  border: 1px solid var(--color-status-danger-border);
 }
 
 /* Horizontal Stepper / Timeline */
@@ -285,11 +285,11 @@
 }
 
 .node-stat-chip.chip-ok {
-  background-color: #dcfce7;
-  color: #15803d;
+  background-color: var(--color-status-success-bg);
+  color: var(--color-status-success-text);
 }
 
 .node-stat-chip.chip-deficit {
-  background-color: #fee2e2;
-  color: #b91c1c;
+  background-color: var(--color-status-danger-bg);
+  color: var(--color-status-danger-text);
 }
